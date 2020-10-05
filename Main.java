@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
         System.out.println("Hello, let's calculate your mortgage.");
 
         int principal = (int) readNumbers("principal: ", 1000, 1_000_000);
@@ -17,31 +16,52 @@ public class Main {
         String formattedMortgage = NumberFormat.getCurrencyInstance().format(mortgage);
 
         System.out.println("Mortgage: " + formattedMortgage);
+        /*
+        In our main method, we are cut down the amount of repetitive code. The previous method contained 3 while
+        methods and we created a method that utilizes the same structure while loops. (not always the case)
+        We are calling on a method that is doing all the calculation for our mortgage calculator and it requires
+        the inputs from the earlier method of readNumbers.
+        We associate the method to a double variable in order for us to string the value of our mortgage value
+        */
     }
 
     public static double readNumbers(String prompt, double min, double max) {
+        /*
+        This method just takes in the user inputs and see whether they are acceptable for our mortgage calculator.
+        The 3 parameter is takes in are the prompt (principal, years, and annual rate), the minimum, and the maximum
+        When we call it on the main method, we will input the min and max to make sure that the prompt we are making
+        is appropriate.
+        */
         Scanner scanner = new Scanner(System.in);
         double value;
+//        since it is ambiguous we are naming the prompt value as value
         while (true) {
             System.out.print(prompt);
-            value = scanner.nextFloat();
-            if(value > min && value <= max)
+            value = scanner.nextDouble();
+            if(value >= min && value <= max)
                 break;
             else
                 System.out.println("Please enter a value between " + min + " and " + max);
         }
         return value;
+        /*
+        Until the loops becomes false or breaks we will check to see if the value is greater than the min or greater
+        than the max. If it passes the condition we will break it and keep going on the main method, else we will
+        ask the user to enter a value between the min and max provided by the method call on the main method.
+        */
     }
 
     public static double calculateMortgage(
             int principal,
             float monthlyInterest,
             byte years) {
+//  Keeping the syntax consistent and have the 3 parameters as such.
 
-        System.out.println(principal + " principal");
+//        System.out.println(principal + " principal");
 
         final byte monthInYears = 12;
         final byte percent = 100;
+//      variable declaration for scoping purposes
 
         short num_Of_Payments = (short)(years * monthInYears);
         float actualRate = (monthlyInterest / percent) / monthInYears;
@@ -59,6 +79,10 @@ public class Main {
 //        System.out.println("months in years " + num_Of_Payments);
 
         return mortgage;
+        /*
+        In this method we are just calculating the inputs from the earlier methods. We were able to organize our
+        code much better.
+        */
     }
 }
 
