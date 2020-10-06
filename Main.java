@@ -4,6 +4,9 @@ import java.text.NumberFormat;
 import java.util.Scanner;
 
 public class Main {
+    final static byte monthInYears = 12;
+    final static byte percent = 100;
+//    could use these as global variables, STATIC METHODS CAN ONLY ACCESS STATIC VARIABLES
 
     public static void main(String[] args) {
         System.out.println("Hello, let's calculate your mortgage.");
@@ -12,10 +15,9 @@ public class Main {
         float monthlyInterest = (float) readNumbers("annual interest: ", 1, 30);
         byte years = (byte) readNumbers("years: ", 1 ,30);
 
-        double mortgage = calculateMortgage(principal, monthlyInterest, years);
-        String formattedMortgage = NumberFormat.getCurrencyInstance().format(mortgage);
+        printMortgage(principal, monthlyInterest, years);
+        printPaymentSchedule(principal, monthlyInterest, years);
 
-        System.out.println("Mortgage: " + formattedMortgage);
         /*
         In our main method, we are cut down the amount of repetitive code. The previous method contained 3 while
         methods and we created a method that utilizes the same structure while loops. (not always the case)
@@ -23,6 +25,24 @@ public class Main {
         the inputs from the earlier method of readNumbers.
         We associate the method to a double variable in order for us to string the value of our mortgage value
         */
+    }
+
+    private static void printMortgage(int principal, float monthlyInterest, byte years) {
+        double mortgage = calculateMortgage(principal, monthlyInterest, years);
+        String formattedMortgage = NumberFormat.getCurrencyInstance().format(mortgage);
+
+        System.out.println("MORTGAGE");
+        System.out.println("--------");
+        System.out.println("MONTHLY PAYMENTS " + formattedMortgage);
+    }
+
+    private static void printPaymentSchedule(int principal, float monthlyInterest, byte years) {
+        System.out.println("PAYMENT SCHEDULE");
+        System.out.println("----------------");
+        for(short month = 1; month <= years * monthInYears; month++) {
+            double balance = calculateBalance(principal, years, month, monthlyInterest);
+            System.out.println(NumberFormat.getCurrencyInstance().format(balance));
+        }
     }
 
     public static double readNumbers(String prompt, double min, double max) {
@@ -59,8 +79,6 @@ public class Main {
 
 //        System.out.println(principal + " principal");
 
-        final byte monthInYears = 12;
-        final byte percent = 100;
 //      variable declaration for scoping purposes
 
         short num_Of_Payments = (short)(years * monthInYears);
@@ -83,6 +101,28 @@ public class Main {
         In this method we are just calculating the inputs from the earlier methods. We were able to organize our
         code much better.
         */
+    }
+
+    public static double calculateBalance(int principal,
+                                          byte years,
+                                          short num_Of_Payments_Made,
+                                          float monthlyInterest) {
+
+        short num_Of_Payments = (short)(years * monthInYears);
+        float actualRate = (monthlyInterest / percent) / monthInYears;
+
+        double balance = principal *
+                    (Math.pow(1 + actualRate, num_Of_Payments) - Math.pow(1 + actualRate, num_Of_Payments_Made))
+                    / (Math.pow(1 + actualRate, num_Of_Payments) - 1);
+//        for(int i = number_of_payments; i > 0; i--) {
+//            double amount = principal *
+//                    (Math.pow(1 + monthlyInterest, number_of_payments) - (Math.pow(1 + monthlyInterest, payments_made)))
+//                    / (Math.pow(1 + monthlyInterest, number_of_payments) - 1);
+//            payments_made++;
+//            System.out.println(amount);
+//        }
+//        better to do a for loop on the main method, keep getting the wrong values
+        return balance;
     }
 }
 
