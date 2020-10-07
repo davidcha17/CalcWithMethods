@@ -19,8 +19,8 @@ public class Main {
         printPaymentSchedule(principal, monthlyInterest, years);
 
         /*
-        In our main method, we are cut down the amount of repetitive code. The previous method contained 3 while
-        methods and we created a method that utilizes the same structure while loops. (not always the case)
+        In our main method, we are cutting down the amount of repetitive code. The previous method contained 3 while
+        loops and we created a method that utilizes the same structure while loops. (not always the case)
         We are calling on a method that is doing all the calculation for our mortgage calculator and it requires
         the inputs from the earlier method of readNumbers.
         We associate the method to a double variable in order for us to string the value of our mortgage value
@@ -42,13 +42,21 @@ public class Main {
         for(short month = 1; month <= years * monthInYears; month++) {
             double balance = calculateBalance(principal, years, month, monthlyInterest);
             System.out.println(NumberFormat.getCurrencyInstance().format(balance));
+//            this is the method that calculates the payment schedule and remember our parameters?
+//            the month indicates the amount of payments that will be made, hence we are incrementing month by one.
+//            this made more sense to make a for loop because we were able to keep track of all the instances.instancest.
         }
     }
+    /*
+    I mentioned before that we want to keep all methods to at most 15-20 lines of codes. I extracted the highlighted
+    lines of code for the methods printPaymentSchedule and printMortgage. If you left click on the highlighted code
+    you are able to extract the lines of code and turn it into it's own method
+    */
 
     public static double readNumbers(String prompt, double min, double max) {
         /*
         This method just takes in the user inputs and see whether they are acceptable for our mortgage calculator.
-        The 3 parameter is takes in are the prompt (principal, years, and annual rate), the minimum, and the maximum
+        It takes in 3 parameters: prompt (principal, years, and annual rate), the minimum, and the maximum
         When we call it on the main method, we will input the min and max to make sure that the prompt we are making
         is appropriate.
         */
@@ -77,10 +85,6 @@ public class Main {
             byte years) {
 //  Keeping the syntax consistent and have the 3 parameters as such.
 
-//        System.out.println(principal + " principal");
-
-//      variable declaration for scoping purposes
-
         short num_Of_Payments = (short)(years * monthInYears);
         float actualRate = (monthlyInterest / percent) / monthInYears;
 
@@ -91,15 +95,10 @@ public class Main {
 //                * (actualRate * Math.pow(1 + actualRate, num_Of_Payments)
 //                / (Math.pow(1 + actualRate, num_Of_Payments) - 1));
 
-//        System.out.println("ratePlusOne is: " + ratePlusOne);
-//        System.out.println("monthly interest " + monthlyInterest);
-//        System.out.println("actual Rate: " + actualRate);
-//        System.out.println("months in years " + num_Of_Payments);
-
         return mortgage;
         /*
         In this method we are just calculating the inputs from the earlier methods. We were able to organize our
-        code much better.
+        code much better. And there were two ways that we could have solved this.
         */
     }
 
@@ -114,16 +113,15 @@ public class Main {
         double balance = principal *
                     (Math.pow(1 + actualRate, num_Of_Payments) - Math.pow(1 + actualRate, num_Of_Payments_Made))
                     / (Math.pow(1 + actualRate, num_Of_Payments) - 1);
-//        for(int i = number_of_payments; i > 0; i--) {
-//            double amount = principal *
-//                    (Math.pow(1 + monthlyInterest, number_of_payments) - (Math.pow(1 + monthlyInterest, payments_made)))
-//                    / (Math.pow(1 + monthlyInterest, number_of_payments) - 1);
-//            payments_made++;
-//            System.out.println(amount);
-//        }
-//        better to do a for loop on the main method, keep getting the wrong values
+
         return balance;
     }
+    /*
+    In this method, we are calculating the payment schedule and I decided to do a for-loop in this method. The problem
+    with that, I kept getting a constant value or the wrong value so I had to do a for-loop on the main method.
+    We took the balance formula from a website and it requires the same parameters from calculate mortgage plus one,
+    which would keep track of the amount of payments that have been made.
+    */
 }
 
 // Down here was the previous code I made before with just one method.
